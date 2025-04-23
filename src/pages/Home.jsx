@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [todos, setTodos] = useState([])
   const base_url = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -12,13 +13,11 @@ export default function Home() {
         const token = Cookies.get('access_token');
         console.log('token:', token);
 
-        // Redirect if no token
         if (!token) {
           window.location.href = '/';
           return;
         }
 
-        // Make sure base_url is set
         if (!base_url) {
           console.error('VITE_API_URL is not defined');
           return;
@@ -33,7 +32,6 @@ export default function Home() {
         });
 
         if (!res.ok) {
-          // e.g. 401 Unauthorized → redirect to login
           console.error('Fetch failed with status', res.status);
           window.location.href = '/';
           return;
@@ -45,12 +43,29 @@ export default function Home() {
         setUser(data);
       } catch (error) {
         console.error('Failed to fetch user details', error);
-        // Optionally redirect on error:
-        // window.location.href = '/';
       }
     };
 
     fetchUserDetails();
+  }, [base_url]);
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const token = Cookies.get('access_token');
+      if (!token) return;
+
+      const url = new URL(`${base_url}/api/todos`);
+      const res = await fetch(url.toString(), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        console.error('Todo fetch failed', res.status);
+        return;
+      }
+      setTodos(await res.json());
+    };
+
+    fetchTodos();
   }, [base_url]);
 
   if (!user) {
@@ -61,7 +76,13 @@ export default function Home() {
     <>
       <Navbar user={user} />
       <main>
-        {/* Rest of your home page content goes here */}
+      <ul className="space-y-2">
+          {todos.map(todo => (
+            <li key={todo.id} className="p-2 border rounded">
+              {todo.todo}
+            </li>
+          ))}
+        </ul>
       </main>
     </>
   );

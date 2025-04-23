@@ -14,33 +14,23 @@ export default function Signup() {
 
     const handleUserName = (e) => {
         const value = e.target.value
-        console.log(value)
         setUserName(value)
-        console.log(userName, "username")
+    }
+    const handleUserEmail = (e) => {
+        const value = e.target.value
+        setUserEmail(value)
     }
     const handlePassword = (e) => {
         const value = e.target.value
-        console.log(value)
         setPassword(value)
-        console.log(userName, "username")
     }
-    const handleUserName = (e) => {
+    const handleMobile = (e) => {
         const value = e.target.value
-        console.log(value)
-        setUserName(value)
-        console.log(userName, "username")
+        setMobile(value)
     }
-    const handlePassword = (e) => {
+    const handleGender = (e) => {
         const value = e.target.value
-        console.log(value)
-        setPassword(value)
-        console.log(userName, "username")
-    }
-    const handleUserName = (e) => {
-        const value = e.target.value
-        console.log(value)
-        setUserName(value)
-        console.log(userName, "username")
+        setGender(value)
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -78,7 +68,7 @@ export default function Signup() {
                 <input
                     type='text'
                     value={userEmail}
-                    onChange={setUserEmail}
+                    onChange={handleUserEmail}
                     placeholder='Enter user email' /><br />
                 <label>Password</label>
                 <input
@@ -90,13 +80,13 @@ export default function Signup() {
                 <input
                     type='number'
                     value={mobile}
-                    onChange={setMobile}
+                    onChange={handleMobile}
                     placeholder='Enter mobile' /><br />
                 <label>Gender</label>
                 <input
                     type='text'
                     value={gender}
-                    onChange={setGender}
+                    onChange={handleGender}
                     placeholder='Enter gender' /><br />
                 <input type='submit' name='Submit' />
             </form>

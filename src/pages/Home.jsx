@@ -8,47 +8,27 @@ export default function Home() {
   const [openTodoId, setOpenTodoId] = useState(null);
   const [editingTodoId, setEditingTodoId] = useState(null);
   const [editValue, setEditValue] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newTodo, setNewTodo] = useState('');
+  const [newDesc, setNewDesc] = useState('');
   const base_url = import.meta.env.VITE_API_URL;
 
   // Fetch user details once
   useEffect(() => {
     const fetchUserDetails = async () => {
-      try {
-        const token = Cookies.get('access_token');
-        if (!token) {
-          window.location.href = '/';
-          return;
-        }
+      const token = Cookies.get('access_token');
+      if (!token) return window.location.href = '/';
 
-        if (!base_url) {
-          console.error('VITE_API_URL is not defined');
-          return;
-        }
-
-        const res = await fetch(`${base_url}/api/users/get-user-details`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          console.error('Fetch failed with status', res.status);
-          window.location.href = '/';
-          return;
-        }
-
-        const data = await res.json();
-        setUser(data);
-      } catch (error) {
-        console.error('Failed to fetch user details', error);
-      }
+      const res = await fetch(`${base_url}/api/users/get-user-details`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return window.location.href = '/';
+      setUser(await res.json());
     };
-
     fetchUserDetails();
   }, [base_url]);
 
-  // Fetch todos once (or refetch by calling trigger refetch function)
+  // Fetch todos once
   useEffect(() => {
     const fetchTodos = async () => {
       const token = Cookies.get('access_token');
@@ -57,25 +37,15 @@ export default function Home() {
       const res = await fetch(`${base_url}/api/todos`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) {
-        console.error('Todo fetch failed', res.status);
-        return;
-      }
-      setTodos(await res.json());
+      if (res.ok) setTodos(await res.json());
     };
-
     fetchTodos();
   }, [base_url]);
 
   const toggleTodo = (id, description) => {
-    if (openTodoId === id) {
-      setOpenTodoId(null);
-      setEditingTodoId(null);
-    } else {
-      setOpenTodoId(id);
-      setEditingTodoId(null);
-      setEditValue(description);
-    }
+    setOpenTodoId(openTodoId === id ? null : id);
+    setEditingTodoId(null);
+    setEditValue(description);
   };
 
   const startEditing = (id, description) => {
@@ -84,24 +54,36 @@ export default function Home() {
   };
 
   const saveEdit = async (id, original) => {
-    const token = Cookies.get('access_token');
     if (editValue === original) return;
+    const token = Cookies.get('access_token');
+    await fetch(`${base_url}/api/todos/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ description: editValue }),
+    });
+    setTodos(prev => prev.map(t => t.id === id ? { ...t, description: editValue } : t));
+    setEditingTodoId(null);
+  };
 
-    try {
-      const res = await fetch(`${base_url}/api/todos/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ description: editValue }),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      // refresh the specific todo in state
-      setTodos(prev => prev.map(t => t.id === id ? { ...t, description: editValue } : t));
-      setEditingTodoId(null);
-    } catch (error) {
-      console.error('Failed to update todo', error);
+  const createTodo = async () => {
+    const token = Cookies.get('access_token');
+    const res = await fetch(`${base_url}/api/todos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ todo: newTodo, description: newDesc }),
+    });
+    if (res.ok) {
+      const created = await res.json();
+      setTodos(prev => [created, ...prev]);
+      setShowCreateModal(false);
+      setNewTodo('');
+      setNewDesc('');
     }
   };
 
@@ -111,7 +93,54 @@ export default function Home() {
     <>
       <Navbar user={user} />
       <main className="p-4">
-        <h1 className="text-2xl mb-4">Your Todos</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl">Your Todos</h1>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Create Todo
+          </button>
+        </div>
+
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+              <h2 className="text-xl mb-4">New Todo</h2>
+              <input
+                type="text"
+                placeholder="Todo name"
+                value={newTodo}
+                onChange={e => setNewTodo(e.target.value)}
+                className="w-full border p-2 mb-3"
+              />
+              <textarea
+                placeholder="Description"
+                value={newDesc}
+                onChange={e => setNewDesc(e.target.value)}
+                className="w-full border p-2 mb-3"
+              />
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 rounded border"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={createTodo}
+                  disabled={!newTodo || !newDesc}
+                  className={`px-4 py-2 rounded text-white ${
+                    !newTodo || !newDesc ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'
+                  }`}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <ul className="space-y-2">
           {todos.map(({ id, todo, description }) => (
             <li key={id} className="p-2 border rounded">

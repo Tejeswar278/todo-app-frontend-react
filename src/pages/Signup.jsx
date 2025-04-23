@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router';
 
 export default function Signup() {

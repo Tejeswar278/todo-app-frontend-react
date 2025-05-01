@@ -42,18 +42,24 @@ export default function Home() {
 			if (res.ok) setTodos(await res.json());
 		};
 		fetchTodos();
-	}, [base_url,refresh]);
+	}, [base_url, refresh]);
 
 	const toggleTodo = (id, description) => {
 		setOpenTodoId(openTodoId === id ? null : id);
 		setEditingTodoId(null);
 		setEditValue(description);
+		// setShowDeletePopUp(false)
 	};
 
 	const startEditing = (id, description) => {
 		setEditingTodoId(id);
 		setEditValue(description);
 	};
+
+	// const stopEditing = () => {
+	// 	setEditingTodoId(null);
+	// 	setEditValue(null);
+	// };
 
 	const saveEdit = async (id, original) => {
 		if (editValue === original) return;
@@ -121,8 +127,8 @@ export default function Home() {
 				</div>
 
 				{showCreateModal && (
-					<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-						<div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+					<div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+						<div className="bg-white p-6 rounded shadow-[0_0_10px_rgba(0,0,0,0.15)] w-full max-w-md pointer-events-auto">
 							<h2 className="text-xl mb-4">New Todo</h2>
 							<input
 								type="text"
@@ -164,7 +170,7 @@ export default function Home() {
 								className="flex justify-between items-center cursor-pointer"
 								onClick={() => toggleTodo(id, description)}
 							>
-								<span>{todo}</span>
+								<span className='font-bold'>{todo}</span>
 								<span>{openTodoId === id ? '▾' : '▸'}</span>
 							</div>
 
@@ -172,7 +178,7 @@ export default function Home() {
 								<div className="mt-2">
 									{editingTodoId !== id ? (
 										<>
-											<p className="mb-2">{description}</p>
+											<p className="mb-2"><span className='font-bold'>Description :</span> {description}</p>
 											<button
 												onClick={() => startEditing(id, description)}
 												className="text-blue-500 hover:underline"
@@ -186,8 +192,8 @@ export default function Home() {
 												Delete
 											</button>
 											{showDeletePopUp && (
-												<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-													<div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+												<div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+													<div className="bg-white p-6 rounded shadow-[0_0_10px_rgba(0,0,0,0.15)] w-full max-w-md pointer-events-auto">
 														<h2 className="text-xl mb-4">Are you sure?</h2>
 														<div className="flex justify-end space-x-2">
 															<button
@@ -209,12 +215,19 @@ export default function Home() {
 										</>
 									) : (
 										<div className="flex space-x-2">
+											<lable className='font-bold'>Description :</lable>
 											<input
 												type="text"
 												value={editValue}
 												onChange={e => setEditValue(e.target.value)}
 												className="border p-1 flex-1"
 											/>
+											{/* <button
+												onClick={stopEditing}
+												className='px-3 py-1 rounded bg-blue-500 text-white'
+											>
+												Cancel
+											</button> */}
 											<button
 												onClick={() => saveEdit(id, description)}
 												disabled={editValue === description}

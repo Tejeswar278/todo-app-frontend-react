@@ -56,10 +56,10 @@ export default function Home() {
 		setEditValue(description);
 	};
 
-	// const stopEditing = () => {
-	// 	setEditingTodoId(null);
-	// 	setEditValue(null);
-	// };
+	const stopEditing = () => {
+		setEditingTodoId(null);
+		setEditValue(null);
+	};
 
 	const saveEdit = async (id, original) => {
 		if (editValue === original) return;
@@ -120,7 +120,7 @@ export default function Home() {
 					<h1 className="text-2xl">Your Todos</h1>
 					<button
 						onClick={() => setShowCreateModal(true)}
-						className="bg-green-500 text-white px-4 py-2 rounded"
+						className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer"
 					>
 						Create Todo
 					</button>
@@ -146,14 +146,14 @@ export default function Home() {
 							<div className="flex justify-end space-x-2">
 								<button
 									onClick={() => setShowCreateModal(false)}
-									className="px-4 py-2 rounded border"
+									className="px-4 py-2 rounded border cursor-pointer"
 								>
 									Cancel
 								</button>
 								<button
 									onClick={createTodo}
 									disabled={!newTodo || !newDesc}
-									className={`px-4 py-2 rounded text-white ${!newTodo || !newDesc ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'
+									className={`px-4 py-2 rounded text-white ${!newTodo || !newDesc ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
 										}`}
 								>
 									Submit
@@ -181,13 +181,13 @@ export default function Home() {
 											<p className="mb-2"><span className='font-bold'>Description :</span> {description}</p>
 											<button
 												onClick={() => startEditing(id, description)}
-												className="text-blue-500 hover:underline"
+												className="text-blue-500 hover:underline cursor-pointer"
 											>
 												Edit
 											</button>
 											<button
 												onClick={() => setShowDeletePopUp(true)}
-												className="text-blue-500 hover:underline"
+												className="text-blue-500 hover:underline cursor-pointer"
 											>
 												Delete
 											</button>
@@ -198,13 +198,13 @@ export default function Home() {
 														<div className="flex justify-end space-x-2">
 															<button
 																onClick={() => setShowDeletePopUp(false)}
-																className="px-4 py-2 rounded border"
+																className="px-4 py-2 rounded border cursor-pointer"
 															>
 																Cancel
 															</button>
 															<button
 																onClick={() => deleteTodo(id)}
-																className="px-4 py-2 rounded text-white bg-blue-500"
+																className="px-4 py-2 rounded text-white bg-blue-500 cursor-pointer"
 															>
 																Yes
 															</button>
@@ -222,19 +222,19 @@ export default function Home() {
 												onChange={e => setEditValue(e.target.value)}
 												className="border p-1 flex-1"
 											/>
-											{/* <button
+											<button
 												onClick={stopEditing}
 												className='px-3 py-1 rounded bg-blue-500 text-white'
 											>
 												Cancel
-											</button> */}
+											</button>
 											<button
 												onClick={() => saveEdit(id, description)}
 												disabled={editValue === description}
 												className={`px-3 py-1 rounded ${editValue === description
 													? 'bg-gray-300 text-gray-600 cursor-not-allowed'
 													: 'bg-blue-500 text-white'
-													}`}
+													} cursor-pointer`}
 											>
 												Save
 											</button>

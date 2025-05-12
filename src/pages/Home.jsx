@@ -115,136 +115,50 @@ export default function Home() {
 	return (
 		<>
 			<Navbar user={user} />
-			<main className="p-4">
-				<div className="flex items-center justify-between mb-4">
-					<h1 className="text-2xl">Your Todos</h1>
-					<button
-						onClick={() => setShowCreateModal(true)}
-						className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer"
-					>
-						Create Todo
-					</button>
+			<main className="flex">
+				<div className='w-1/6 flex flex-col justify-between h-200 bg-gray-800 text-white mt-15'>
+					<div>
+						<div className='min-h-8 max-w-7xl border-white'>Profile</div>
+						<div>Dashboard</div>
+						<div>Vital Task</div>
+						<div>My Task</div>
+						<div>Task Categories</div>
+						<div>Settings</div>
+						<div>Help</div>
+					</div>
+					<div>
+						Logout
+					</div>
 				</div>
-
-				{showCreateModal && (
-					<div className="fixed inset-0 flex items-center justify-center pointer-events-none">
-						<div className="bg-white p-6 rounded shadow-[0_0_10px_rgba(0,0,0,0.15)] w-full max-w-md pointer-events-auto">
-							<h2 className="text-xl mb-4">New Todo</h2>
-							<input
-								type="text"
-								placeholder="Todo name"
-								value={newTodo}
-								onChange={e => setNewTodo(e.target.value)}
-								className="w-full border p-2 mb-3"
-							/>
-							<textarea
-								placeholder="Description"
-								value={newDesc}
-								onChange={e => setNewDesc(e.target.value)}
-								className="w-full border p-2 mb-3"
-							/>
-							<div className="flex justify-end space-x-2">
-								<button
-									onClick={() => setShowCreateModal(false)}
-									className="px-4 py-2 rounded border cursor-pointer"
-								>
-									Cancel
-								</button>
-								<button
-									onClick={createTodo}
-									disabled={!newTodo || !newDesc}
-									className={`px-4 py-2 rounded text-white ${!newTodo || !newDesc ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
-										}`}
-								>
-									Submit
-								</button>
-							</div>
+				<div className='w-5/6 mt-15 mx-4'>
+					<div className="flex items-center justify-between mb-4">
+						<h1 className="text-2xl">Welcome back, Tejeswar</h1>
+						<div className='flex'>
+							<div>icons</div>
+							<button
+								onClick={() => setShowCreateModal(true)}
+								className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer"
+							>
+								Invite
+							</button>
 						</div>
 					</div>
-				)}
-
-				<ul className="space-y-2">
-					{todos.map(({ id, todo, description }) => (
-						<li key={id} className="p-2 border rounded">
-							<div
-								className="flex justify-between items-center cursor-pointer"
-								onClick={() => toggleTodo(id, description)}
-							>
-								<span className='font-bold'>{todo}</span>
-								<span>{openTodoId === id ? '▾' : '▸'}</span>
-							</div>
-
-							{openTodoId === id && (
-								<div className="mt-2">
-									{editingTodoId !== id ? (
-										<>
-											<p className="mb-2"><span className='font-bold'>Description :</span> {description}</p>
-											<button
-												onClick={() => startEditing(id, description)}
-												className="text-blue-500 hover:underline cursor-pointer"
-											>
-												Edit
-											</button>
-											<button
-												onClick={() => setShowDeletePopUp(true)}
-												className="text-blue-500 hover:underline cursor-pointer"
-											>
-												Delete
-											</button>
-											{showDeletePopUp && (
-												<div className="fixed inset-0 flex items-center justify-center pointer-events-none">
-													<div className="bg-white p-6 rounded shadow-[0_0_10px_rgba(0,0,0,0.15)] w-full max-w-md pointer-events-auto">
-														<h2 className="text-xl mb-4">Are you sure?</h2>
-														<div className="flex justify-end space-x-2">
-															<button
-																onClick={() => setShowDeletePopUp(false)}
-																className="px-4 py-2 rounded border cursor-pointer"
-															>
-																Cancel
-															</button>
-															<button
-																onClick={() => deleteTodo(id)}
-																className="px-4 py-2 rounded text-white bg-blue-500 cursor-pointer"
-															>
-																Yes
-															</button>
-														</div>
-													</div>
-												</div>
-											)}
-										</>
-									) : (
-										<div className="flex space-x-2">
-											<lable className='font-bold'>Description :</lable>
-											<input
-												type="text"
-												value={editValue}
-												onChange={e => setEditValue(e.target.value)}
-												className="border p-1 flex-1"
-											/>
-											<button
-												onClick={stopEditing}
-												className='px-3 py-1 rounded bg-blue-500 text-white'
-											>
-												Cancel
-											</button>
-											<button
-												onClick={() => saveEdit(id, description)}
-												disabled={editValue === description}
-												className={`px-3 py-1 rounded ${editValue === description
-													? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-													: 'bg-blue-500 text-white'
-													} cursor-pointer`}
-											>
-												Save
-											</button>
-										</div>
-									)}
+					<div className='flex'>
+						<div>
+							<div>
+								<div>To-Do</div>
+								<div>
+									<button>Add Task</button>
 								</div>
-							)}
-						</li>
-					))}
-				</ul>
+							</div>
+							<div></div>
+						</div>
+						<div>20 June, Today</div>
+						<div>
+							{/* {todos?.map()} */}
+						</div>
+					</div>
+				</div>
 			</main>
 		</>
 	);

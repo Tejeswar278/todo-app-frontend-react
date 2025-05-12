@@ -65,13 +65,13 @@ export default function Login() {
                         value={userName}
                         onChange={handleUserName}
                         required
-                        className={`pl-10 pt-6 pb-2 w-full border-b-2 focus:outline-none focus:border-blue-500 border-gray-300 peer ms-4`}
+                        className={`pl-10 pt-6 pb-2 w-full border-b-2 focus:outline-none focus:border-blue-500 border-gray-300 peer ms-4 cursor-pointer`}
                     />
                     <label
                         htmlFor="username"
                         className={`absolute left-10 transition-all duration-200 
-                ${userName ? "top-1 text-sm text-gray-800" : "top-4 text-base text-gray-400"}
-                peer-focus:top-1 peer-focus:text-sm peer-focus:text-gray-800 ms-4`}
+                    ${userName ? "top-1 text-sm text-gray-800" : "top-4 text-base text-gray-400"}
+                    peer-focus:top-1 peer-focus:text-sm peer-focus:text-gray-800 ms-4 cursor-pointer`}
                     >
                         User Name
                     </label>
@@ -86,13 +86,13 @@ export default function Login() {
                         value={password}
                         onChange={handlePassword}
                         required
-                        className={`pl-10 pr-10 pt-6 pb-2 w-full border-b-2 focus:outline-none focus:border-blue-500 border-gray-300 peer ms-4`}
+                        className={`pl-10 pr-10 pt-6 pb-2 w-full border-b-2 focus:outline-none focus:border-blue-500 border-gray-300 peer ms-4 cursor-pointer`}
                     />
                     <label
                         htmlFor="password"
                         className={`absolute left-10 transition-all duration-200 
                 ${password ? "top-1 text-sm text-gray-800" : "top-4 text-base text-gray-400"}
-                peer-focus:top-1 peer-focus:text-sm peer-focus:text-gray-800 ms-4`}
+                peer-focus:top-1 peer-focus:text-sm peer-focus:text-gray-800 ms-4 cursor-pointer`}
                     >
                         Password
                     </label>
@@ -109,7 +109,7 @@ export default function Login() {
                     <input
                         type="checkbox"
                         id="remember"
-                        className="accent-blue-600"
+                        className="accent-blue-600 cursor-pointer"
                         checked={rememberMe}
                         onChange={(e) => setRememberMe(e.target.checked)}
                     />

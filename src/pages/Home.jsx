@@ -1,6 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Cookies from 'js-cookie';
+import profile_img from '../../public/Ellipse 1.png'
+import dashboard_icon_w from '../../public/dashboard_white.png'
+import dashboard_icon_b from '../../public/dashboard_black.png'
+import help_icon_w from '../../public/help_white.png'
+// import help_icon_b from '../../public/help_black.png'
+import category_icon_w from '../../public/category_white.png'
+// // import category_icon_b from '../../public/category_black.png'
+import mytask_icon_w from '../../public/mytask_white.png'
+// // import mytask_icon_b from '../../public/mytask_black.png'
+import settings_icon_w from '../../public/settings_white.png'
+// // import settings_icon_b from '../../public/settings_black.png'
+import vital_icon_w from '../../public/vital_white.png'
+import Dashboard from '../components/Dashboard';
+import VitalTask from '../components/VitalTask';
+import MyTask from '../components/MyTask';
+import TaskCategory from '../components/TaskCategory';
+import Settings from '../components/Settings';
+import Help from '../components/Help';
+// // import vital_icon_b from '../../public/vital_black.png'
+
+import { MdDashboard } from "react-icons/md";
 
 export default function Home() {
 	const [user, setUser] = useState(null);
@@ -14,6 +35,7 @@ export default function Home() {
 	const [showDeletePopUp, setShowDeletePopUp] = useState(false);
 	const [refresh, setRefresh] = useState(false)
 	const base_url = import.meta.env.VITE_API_URL;
+	const [activeSection, setActiveSection] = useState('dashboard');
 
 	// Fetch user details once
 	useEffect(() => {
@@ -112,52 +134,65 @@ export default function Home() {
 
 	if (!user) return <div>Loading...</div>;
 
+	const renderContent = () => {
+		switch (activeSection) {
+			case 'dashboard':
+				return <Dashboard />;
+			case 'vital':
+				return <VitalTask />;
+			case 'mytask':
+				return <MyTask />;
+			case 'category':
+				return <TaskCategory />;
+			case 'settings':
+				return <Settings />;
+			case 'help':
+				return <Help />;
+			default:
+				return <Help />;
+		}
+	};
+
 	return (
 		<>
 			<Navbar user={user} />
 			<main className="flex">
-				<div className='w-1/6 flex flex-col justify-between h-200 bg-gray-800 text-white mt-15'>
-					<div>
-						<div className='min-h-8 max-w-7xl border-white'>Profile</div>
-						<div>Dashboard</div>
-						<div>Vital Task</div>
-						<div>My Task</div>
-						<div>Task Categories</div>
-						<div>Settings</div>
-						<div>Help</div>
+				<div className='w-1/6 flex flex-col justify-between h-200 bg-gray-800 text-white mt-15 rounded relative'>
+					<div className='min-h-8 max-w-7xl border-white flex flex-col items-center relative'>
+						<img className='absolute -top-12' src={profile_img} />
+						<div className='mt-16 text-center'>
+							<span className='font-bold'>Tejeswar Muddada</span>
+							<div>muddadateja1999@gmail.com</div>
+						</div>
 					</div>
-					<div>
-						Logout
+					<div className='p-4 mx-auto '>
+						<button onClick={() => setActiveSection('dashboard')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer rounded-2xl border items-center' href=''>
+							Dashboard
+						</button>
+						<button onClick={() => setActiveSection('vital')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
+							Vital Task
+						</button>
+						<button onClick={() => setActiveSection('mytask')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
+							My Task
+						</button>
+						<button onClick={() => setActiveSection('category')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
+							Task Categories
+						</button>
+						<button onClick={() => setActiveSection('settings')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
+							Settings
+						</button>
+						<button onClick={() => setActiveSection('help')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
+							Help
+						</button>
+					</div>
+					<div className='mx-auto pb-4'>
+						<button className='flex px-10 py-4 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl'>
+							Logout
+						</button>
 					</div>
 				</div>
-				<div className='w-5/6 mt-15 mx-4'>
-					<div className="flex items-center justify-between mb-4">
-						<h1 className="text-2xl">Welcome back, Tejeswar</h1>
-						<div className='flex'>
-							<div>icons</div>
-							<button
-								onClick={() => setShowCreateModal(true)}
-								className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer"
-							>
-								Invite
-							</button>
-						</div>
-					</div>
-					<div className='flex'>
-						<div>
-							<div>
-								<div>To-Do</div>
-								<div>
-									<button>Add Task</button>
-								</div>
-							</div>
-							<div></div>
-						</div>
-						<div>20 June, Today</div>
-						<div>
-							{/* {todos?.map()} */}
-						</div>
-					</div>
+				<div className='w-5/6 mt-15 mx-20'>
+					{renderContent()}
 				</div>
 			</main>
 		</>

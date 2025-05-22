@@ -35,7 +35,7 @@ export default function Home() {
 	const [showDeletePopUp, setShowDeletePopUp] = useState(false);
 	const [refresh, setRefresh] = useState(false)
 	const base_url = import.meta.env.VITE_API_URL;
-	const [activeSection, setActiveSection] = useState('dashboard');
+	const [activeSection, setActiveSection] = useState('Dashboard');
 
 	// Fetch user details once
 	useEffect(() => {
@@ -136,22 +136,24 @@ export default function Home() {
 
 	const renderContent = () => {
 		switch (activeSection) {
-			case 'dashboard':
+			case 'Dashboard':
 				return <Dashboard />;
-			case 'vital':
+			case 'Vital Task':
 				return <VitalTask />;
-			case 'mytask':
+			case 'My Task':
 				return <MyTask />;
-			case 'category':
+			case 'Task Categories':
 				return <TaskCategory />;
-			case 'settings':
+			case 'Settings':
 				return <Settings />;
-			case 'help':
+			case 'Help':
 				return <Help />;
 			default:
 				return <Help />;
 		}
 	};
+
+	const side_tabs = ["Dashboard", "Vital Task", "My Task", "Task Categories", "Settings", "Help"]
 
 	return (
 		<>
@@ -166,24 +168,14 @@ export default function Home() {
 						</div>
 					</div>
 					<div className='p-4 mx-auto '>
-						<button onClick={() => setActiveSection('dashboard')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer rounded-2xl border items-center'>
-							Dashboard
-						</button>
-						<button onClick={() => setActiveSection('vital')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
-							Vital Task
-						</button>
-						<button onClick={() => setActiveSection('mytask')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
-							My Task
-						</button>
-						<button onClick={() => setActiveSection('category')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
-							Task Categories
-						</button>
-						<button onClick={() => setActiveSection('settings')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
-							Settings
-						</button>
-						<button onClick={() => setActiveSection('help')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>
-							Help
-						</button>
+						{side_tabs?.map((e,i) => {
+							return (
+								<button key={i} onClick={() => setActiveSection(e)} className={`flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border ${activeSection == e?'bg-white text-gray-900':''}`}>
+									{e}
+								</button>
+							)
+						})}
+
 					</div>
 					<div className='mx-auto pb-4'>
 						<button className='flex px-10 py-4 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl'>

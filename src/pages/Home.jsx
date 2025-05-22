@@ -166,7 +166,7 @@ export default function Home() {
 						</div>
 					</div>
 					<div className='p-4 mx-auto '>
-						<button onClick={() => setActiveSection('dashboard')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer rounded-2xl border items-center' href=''>
+						<button onClick={() => setActiveSection('dashboard')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer rounded-2xl border items-center'>
 							Dashboard
 						</button>
 						<button onClick={() => setActiveSection('vital')} className='flex mx-auto p-4 w-1/1 hover:bg-white hover:text-gray-900 text-2xl cursor-pointer my-2 rounded-2xl border'>

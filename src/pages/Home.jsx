@@ -156,7 +156,7 @@ export default function Home() {
 	const side_tabs = ["Dashboard", "Vital Task", "My Task", "Task Categories", "Settings", "Help"]
 
 	return (
-		<>
+		<div className='pt-20 h-screen'>
 			<Navbar user={user} />
 			<main className="flex">
 				<div className='w-1/6 flex flex-col justify-between h-200 bg-gray-800 text-white mt-15 rounded relative'>
@@ -187,6 +187,6 @@ export default function Home() {
 					{renderContent()}
 				</div>
 			</main>
-		</>
+		</div>
 	);
 }

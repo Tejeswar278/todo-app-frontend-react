@@ -94,7 +94,7 @@ export default function VitalTask() {
 	return (
 		<div className='flex w-full gap-3'>
 			<div className='border-2 border-gray-300 shadow-xl w-1/2 rounded-2xl py-4'>
-				<div className='font-bold ps-4 mb-4'><span className='decorator'>Vital</span> Tasks</div>
+				<div className='font-bold ps-4 mb-4'><span className='underline decoration-2 underline-offset-4 decoration-red-500'>Vital</span> Tasks</div>
 				<div>
 					{vital_tasks_list?.map((e, i) => {
 						return (

@@ -118,7 +118,7 @@ export default function Dashboard() {
     ]
 
     return (
-        <div className='border-2 border-gray-300 shadow-xl rounded p-4'>
+        <div className='border-2 border-gray-300 shadow-xl rounded p-4 h-screen'>
             <div className="flex items-center justify-between mb-4">
                 <div className='flex'>
                     <h1 className="text-2xl me-4 font-weight-">Welcome back, Tejeswar</h1>
